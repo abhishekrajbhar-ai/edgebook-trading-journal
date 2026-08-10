@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edgebook — Trading intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">E</span><span>edgebook</span></a>
+      <p class="workspace-label">WORKSPACE</p>
+      <nav>
+        <a class="active" href="#overview"><span>◫</span> Overview</a>
+        <a href="#trades"><span>↗</span> Trades</a>
+        <a href="#analytics"><span>◌</span> Analytics</a>
+        <a href="#playbooks"><span>◇</span> Playbooks</a>
+        <a href="#insights"><span>✦</span> AI Coach <b>NEW</b></a>
+      </nav>
+      <p class="workspace-label bottom-label">ACCOUNT</p>
+      <nav>
+        <a href="#connections"><span>⌘</span> Connections</a>
+        <a href="#settings"><span>⚙</span> Settings</a>
+      </nav>
+      <div class="user-card"><div class="avatar">RK</div><div><strong>Raj Kumar</strong><small>Pro trader</small></div><span class="more">•••</span></div>
+    </aside>
+
+    <main>
+      <header>
+        <div><p class="eyebrow">MONDAY, 10 AUGUST</p><h1>Good morning, Raj <span>↗</span></h1></div>
+        <div class="header-actions"><button class="icon-button" aria-label="Notifications">♧</button><button class="outline-button" id="importBtn">↑ Import trades</button><button class="primary-button" id="addTradeBtn">+ Add trade</button></div>
+      </header>
+
+      <section class="hero" id="overview">
+        <div class="hero-copy"><div class="live-dot">WEEKLY REVIEW</div><h2>Trade with<br /><em>intention.</em></h2><p>Your edge is taking shape. Review what worked, fix what didn’t, and make the next trade your best one.</p><button class="light-button" id="reviewBtn">Review my week <span>→</span></button></div>
+        <div class="hero-stat"><p>NET P&amp;L · ALL TRADES</p><strong id="heroPnl">+$0<span>.00</span></strong><div class="gain" id="heroGain">Your journal is live <small>add trades to improve insights</small></div><svg viewBox="0 0 440 135" preserveAspectRatio="none" aria-label="profit chart"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#a8f2c1" stop-opacity=".42"/><stop offset="1" stop-color="#a8f2c1" stop-opacity="0"/></linearGradient></defs><path id="heroFill" d="" fill="url(#fill)"/><path id="heroLine" d="" fill="none" stroke="#c5ffd7" stroke-width="3"/></svg></div>
+      </section>
+
+      <section class="metrics" aria-label="Trading metrics">
+        <article><div class="metric-top"><span>Net P&amp;L</span><i id="pnlState" class="up">All time</i></div><strong id="netPnl">+$0.00</strong><small id="pnlCaption">0 logged trades</small></article>
+        <article><div class="metric-top"><span>Win rate</span><i id="winState" class="up">—</i></div><strong id="winRate">0%</strong><small id="winCaption">0 wins · 0 losses</small></article>
+        <article><div class="metric-top"><span>Profit factor</span><i id="pfState" class="up">—</i></div><strong id="profitFactor">—</strong><small id="pfCaption">Add results to calculate</small></article>
+        <article><div class="metric-top"><span>Avg. R multiple</span><i id="rState" class="up">—</i></div><strong id="avgR">0.00R</strong><small id="rCaption">Across 0 trades</small></article>
+      </section>
+
+      <section class="content-grid" id="analytics">
+        <article class="panel performance-panel"><div class="panel-title"><div><p class="eyebrow">PERFORMANCE</p><h3>Equity curve</h3></div><button class="text-button" id="periodBtn">All trades⌄</button></div><div class="chart-summary"><strong id="equityValue">$10,000<small>.00</small></strong><span id="equityChange">Journal starting balance</span></div><div class="chart-wrap"><div class="chart-lines"><span>High</span><span></span><span></span><span>Low</span></div><svg viewBox="0 0 650 218" preserveAspectRatio="none"><defs><linearGradient id="bluefill" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#5b66f4" stop-opacity=".24"/><stop offset="1" stop-color="#5b66f4" stop-opacity="0"/></linearGradient></defs><path id="equityFill" d="" fill="url(#bluefill)"/><path id="equityLine" d="" fill="none" stroke="#5b66f4" stroke-width="3"/></svg><div class="chart-dates" id="chartDates"><span>Start</span><span>Latest</span></div></div></article>
+        <article class="panel coach-panel" id="insights"><div class="panel-title"><div><p class="eyebrow">AI COACH</p><h3 id="coachTitle">Your biggest opportunity</h3></div><span class="sparkle">✦</span></div><div class="coach-score"><div class="score-ring" id="scoreRing"><strong id="coachScore">0</strong><small>/100</small></div><div><strong id="coachLabel">Build your data set</strong><p id="coachSub">Log 5 trades for a first review</p></div></div><p class="coach-text" id="coachText">Your coach will identify patterns in discipline, setups, and risk after you record more trades.</p><button class="dark-button" id="coachBtn">See the pattern <span>→</span></button></article>
+      </section>
+
+      <section class="content-grid lower-grid">
+        <article class="panel recent-panel" id="trades"><div class="panel-title"><div><p class="eyebrow">RECENT ACTIVITY</p><h3>Latest trades</h3></div><div><button class="text-button" id="filterBtn">All⌄</button><button class="text-button" id="viewAllBtn">View all →</button></div></div><table><thead><tr><th>MARKET</th><th>SETUP</th><th>RESULT</th><th>R-MULTIPLE</th><th></th></tr></thead><tbody id="tradeRows"></tbody></table></article>
+        <article class="panel setup-panel" id="playbooks"><div class="panel-title"><div><p class="eyebrow">SETUP PERFORMANCE</p><h3>What’s working</h3></div><button class="text-button" id="setupInfoBtn">Details →</button></div><div id="setupRows"></div></article>
+      </section>
+      <section class="connections" id="connections"><div><p class="eyebrow">YOUR BROKERAGE DATA</p><h3>Bring every trade into one place</h3><p>Import a CSV statement now; platform connections can be configured next.</p></div><div class="connection-pills"><button class="connectionBtn">MetaTrader 4/5</button><button class="connectionBtn">cTrader</button><button class="connectionBtn">Exness</button><button id="csvBtn">CSV import</button></div><input type="file" id="csvInput" accept=".csv,text/csv" hidden /></section>
+    </main>
+    <div class="modal-backdrop" id="modal"><div class="modal"><button class="modal-close" id="closeModal">×</button><p class="eyebrow">NEW TRADE</p><h2>Log your execution</h2><form id="tradeForm"><label>Market<input id="marketInput" placeholder="e.g. XAUUSD" required /></label><div class="form-row"><label>Result ($)<input id="resultInput" type="number" step="0.01" required /></label><label>R multiple<input id="rInput" type="number" step="0.1" required /></label></div><label>Setup<select id="setupInput"><option>Break & retest</option><option>London breakout</option><option>Range reversal</option><option>Trend continuation</option><option>Other</option></select></label><label>Trade date<input id="dateInput" type="date" required /></label><label>Review note (optional)<textarea id="noteInput" placeholder="What was the plan? Any mistake or lesson?"></textarea></label><button class="primary-button" type="submit">Save trade</button></form></div></div>
+    <style>textarea{padding:10px;border:1px solid #dfe3e7;border-radius:6px;font:13px Manrope;color:#202938;min-height:66px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.delete-trade{color:#aab1b8;background:transparent;font-size:18px;line-height:1;padding:3px}.delete-trade:hover{color:#d65656}.empty-state{text-align:center;color:#929aa4;padding:24px!important;font:12px Manrope!important}.donut{--donut-color:#6a6fe8}.donut.teal{--donut-color:#2db59d}.donut.orange{--donut-color:#efa35e}@media(max-width:650px){.form-row{grid-template-columns:1fr}}</style>
+    <script src="script.js"></script>
+  </body>
+</html>
