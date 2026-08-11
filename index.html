@@ -122,5 +122,22 @@
         refreshProfileUI();
       })();
     </script>
+    <script>
+      (() => {
+        const connectorDocs = 'https://github.com/abhishekrajbhar-ai/edgebook-trading-journal/tree/main/connectors';
+        document.querySelectorAll('.connectionBtn').forEach(button => {
+          button.onclick = () => {
+            if (button.textContent.includes('MetaTrader')) {
+              const openDocs = confirm('Free MetaTrader connection: run the Edgebook exporter script in MT4 or MT5, then import its CSV file here. Open the setup files and instructions?');
+              if (openDocs) window.open(connectorDocs, '_blank', 'noopener');
+            } else if (button.textContent.includes('cTrader')) {
+              alert('cTrader live sync requires a registered OAuth application and secure backend. In the free local version, export your account history as CSV and import it here.');
+            } else {
+              alert('For Exness, use the MT4/MT5 exporter when your account uses MetaTrader. For platform-only accounts, export account history as CSV and import it here.');
+            }
+          };
+        });
+      })();
+    </script>
   </body>
 </html>
