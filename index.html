@@ -25,7 +25,7 @@
         <a href="#connections"><span>⌘</span> Connections</a>
         <a href="#settings"><span>⚙</span> Settings</a>
       </nav>
-      <div class="user-card"><div class="avatar">RK</div><div><strong>Raj Kumar</strong><small>Pro trader</small></div><span class="more">•••</span></div>
+      <div class="user-card"><div class="avatar" id="profileInitials">RK</div><div><strong id="profileName">Raj Kumar</strong><small>Local profile</small></div><button class="more profile-switch" id="profileSwitchBtn" title="Switch local profile">⌄</button></div>
     </aside>
 
     <main>
@@ -56,9 +56,71 @@
         <article class="panel setup-panel" id="playbooks"><div class="panel-title"><div><p class="eyebrow">SETUP PERFORMANCE</p><h3>What’s working</h3></div><button class="text-button" id="setupInfoBtn">Details →</button></div><div id="setupRows"></div></article>
       </section>
       <section class="connections" id="connections"><div><p class="eyebrow">YOUR BROKERAGE DATA</p><h3>Bring every trade into one place</h3><p>Import a CSV statement now; platform connections can be configured next.</p></div><div class="connection-pills"><button class="connectionBtn">MetaTrader 4/5</button><button class="connectionBtn">cTrader</button><button class="connectionBtn">Exness</button><button id="csvBtn">CSV import</button></div><input type="file" id="csvInput" accept=".csv,text/csv" hidden /></section>
+      <section class="local-data" id="settings"><div><p class="eyebrow">FREE LOCAL STORAGE</p><h3>Your data stays on this device</h3><p id="profileStorageText">Trades are saved privately in this browser.</p></div><div class="local-actions"><button id="newProfileBtn">+ New profile</button><button id="switchProfileBtn">Switch profile</button><button id="exportBtn">↓ Export backup</button><button id="importBackupBtn">↑ Import backup</button></div><input type="file" id="backupInput" accept="application/json,.json" hidden /></section>
     </main>
     <div class="modal-backdrop" id="modal"><div class="modal"><button class="modal-close" id="closeModal">×</button><p class="eyebrow">NEW TRADE</p><h2>Log your execution</h2><form id="tradeForm"><label>Market<input id="marketInput" placeholder="e.g. XAUUSD" required /></label><div class="form-row"><label>Result ($)<input id="resultInput" type="number" step="0.01" required /></label><label>R multiple<input id="rInput" type="number" step="0.1" required /></label></div><label>Setup<select id="setupInput"><option>Break & retest</option><option>London breakout</option><option>Range reversal</option><option>Trend continuation</option><option>Other</option></select></label><label>Trade date<input id="dateInput" type="date" required /></label><label>Review note (optional)<textarea id="noteInput" placeholder="What was the plan? Any mistake or lesson?"></textarea></label><button class="primary-button" type="submit">Save trade</button></form></div></div>
-    <style>textarea{padding:10px;border:1px solid #dfe3e7;border-radius:6px;font:13px Manrope;color:#202938;min-height:66px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.delete-trade{color:#aab1b8;background:transparent;font-size:18px;line-height:1;padding:3px}.delete-trade:hover{color:#d65656}.empty-state{text-align:center;color:#929aa4;padding:24px!important;font:12px Manrope!important}.donut{--donut-color:#6a6fe8}.donut.teal{--donut-color:#2db59d}.donut.orange{--donut-color:#efa35e}@media(max-width:650px){.form-row{grid-template-columns:1fr}}</style>
+    <style>textarea{padding:10px;border:1px solid #dfe3e7;border-radius:6px;font:13px Manrope;color:#202938;min-height:66px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.delete-trade{color:#aab1b8;background:transparent;font-size:18px;line-height:1;padding:3px}.delete-trade:hover{color:#d65656}.empty-state{text-align:center;color:#929aa4;padding:24px!important;font:12px Manrope!important}.donut{--donut-color:#6a6fe8}.donut.teal{--donut-color:#2db59d}.donut.orange{--donut-color:#efa35e}.profile-switch{border:0;padding:4px;background:transparent;cursor:pointer}.local-data{border:1px solid #dfe5eb;border-radius:10px;margin-top:18px;padding:23px 26px;background:#fff;display:flex;align-items:center;justify-content:space-between}.local-data .eyebrow{margin:0 0 6px}.local-data h3{font-size:16px;margin:0 0 6px}.local-data p:not(.eyebrow){color:#7a8490;font-size:11px;margin:0}.local-actions{display:flex;gap:8px;flex-wrap:wrap}.local-actions button{padding:11px 12px;border:1px solid #e1e3ec;background:#fff;border-radius:6px;color:#4d5968}@media(max-width:650px){.form-row{grid-template-columns:1fr}.local-data{align-items:flex-start;gap:18px;flex-direction:column}}</style>
     <script src="script.js"></script>
+    <script>
+      (() => {
+        const profileListKey = 'edgebook-local-profiles-v1';
+        const activeKey = 'edgebook-active-profile-v1';
+        const active = localStorage.getItem(activeKey) || 'Raj Kumar';
+        const profiles = JSON.parse(localStorage.getItem(profileListKey) || 'null') || ['Raj Kumar'];
+        const initials = name => name.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
+        const refreshProfileUI = () => {
+          document.getElementById('profileName').textContent = active;
+          document.getElementById('profileInitials').textContent = initials(active);
+          document.getElementById('profileStorageText').textContent = `${active}'s trades are stored only in this browser. Export a backup before changing devices.`;
+        };
+        const chooseProfile = () => {
+          const choice = prompt(`Local profiles:\n${profiles.map((name, index) => `${index + 1}. ${name}`).join('\n')}\n\nEnter a profile name:` , active);
+          if (!choice) return;
+          const match = profiles.find(name => name.toLowerCase() === choice.trim().toLowerCase());
+          if (!match) return alert('Profile not found. Create it first with New profile.');
+          localStorage.setItem(activeKey, match);
+          location.reload();
+        };
+        const createProfile = () => {
+          const name = prompt('New local profile name:');
+          if (!name) return;
+          const clean = name.trim().replace(/\s+/g, ' ').slice(0, 40);
+          if (!clean) return;
+          if (profiles.some(profile => profile.toLowerCase() === clean.toLowerCase())) return alert('That profile already exists.');
+          profiles.push(clean);
+          localStorage.setItem(profileListKey, JSON.stringify(profiles));
+          localStorage.setItem(activeKey, clean);
+          location.reload();
+        };
+        document.getElementById('newProfileBtn').onclick = createProfile;
+        document.getElementById('switchProfileBtn').onclick = chooseProfile;
+        document.getElementById('profileSwitchBtn').onclick = chooseProfile;
+        document.getElementById('exportBtn').onclick = () => {
+          const saved = JSON.parse(localStorage.getItem(`edgebook-trades-v2-${active}`) || '[]');
+          const blob = new Blob([JSON.stringify({ version: 1, profile: active, exportedAt: new Date().toISOString(), trades: saved }, null, 2)], { type: 'application/json' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob); link.download = `${active.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-edgebook-backup.json`; link.click();
+          URL.revokeObjectURL(link.href);
+        };
+        document.getElementById('importBackupBtn').onclick = () => document.getElementById('backupInput').click();
+        document.getElementById('backupInput').onchange = async event => {
+          const file = event.target.files[0]; if (!file) return;
+          try {
+            const backup = JSON.parse(await file.text());
+            if (!Array.isArray(backup.trades)) throw new Error('invalid');
+            const name = (prompt('Import into local profile:', backup.profile || active) || '').trim().slice(0, 40);
+            if (!name) return;
+            const currentProfiles = JSON.parse(localStorage.getItem(profileListKey) || '[]');
+            if (!currentProfiles.includes(name)) { currentProfiles.push(name); localStorage.setItem(profileListKey, JSON.stringify(currentProfiles)); }
+            if (localStorage.getItem(`edgebook-trades-v2-${name}`) && !confirm(`Replace the existing trades in ${name}?`)) return;
+            localStorage.setItem(`edgebook-trades-v2-${name}`, JSON.stringify(backup.trades));
+            localStorage.setItem(activeKey, name);
+            location.reload();
+          } catch { alert('That file is not a valid Edgebook backup.'); }
+          event.target.value = '';
+        };
+        refreshProfileUI();
+      })();
+    </script>
   </body>
 </html>

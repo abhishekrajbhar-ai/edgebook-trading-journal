@@ -1,7 +1,9 @@
-const $ = s => document.querySelector(s), key = 'edgebook-trades-v1', start = 10000;
+const $ = s => document.querySelector(s), profileListKey = 'edgebook-local-profiles-v1', activeProfile = localStorage.getItem('edgebook-active-profile-v1') || 'Raj Kumar', key = `edgebook-trades-v2-${activeProfile}`, start = 10000;
 let all = false, filter = 'all';
 const seed = [{id:'1',market:'XAUUSD',result:420,r:2.1,setup:'Break & retest',date:'2026-08-10',note:'Waited for confirmation.'},{id:'2',market:'EURUSD',result:185.5,r:1.4,setup:'London breakout',date:'2026-08-10',note:'Clean entry.'},{id:'3',market:'BTCUSD',result:-96,r:-.8,setup:'Range reversal',date:'2026-08-09',note:'Entered early.'},{id:'4',market:'NAS100',result:320,r:1.8,setup:'Break & retest',date:'2026-08-08',note:'Followed plan.'},{id:'5',market:'GBPUSD',result:-125,r:-1,setup:'London breakout',date:'2026-08-07',note:'Added to losing position.'},{id:'6',market:'XAUUSD',result:210,r:1.5,setup:'Break & retest',date:'2026-08-06',note:'Good patience.'},{id:'7',market:'US30',result:-80,r:-.7,setup:'Trend continuation',date:'2026-08-05',note:'Chased a move.'}];
-let trades = JSON.parse(localStorage.getItem(key) || 'null') || seed;
+const savedProfiles = JSON.parse(localStorage.getItem(profileListKey) || 'null') || ['Raj Kumar'];
+if (!localStorage.getItem(profileListKey)) localStorage.setItem(profileListKey, JSON.stringify(savedProfiles));
+let trades = JSON.parse(localStorage.getItem(key) || 'null') || (activeProfile === 'Raj Kumar' ? JSON.parse(localStorage.getItem('edgebook-trades-v1') || 'null') || seed : []);
 const save = () => localStorage.setItem(key, JSON.stringify(trades));
 const money = n => `${n >= 0 ? '+' : '−'}$${Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const date = d => new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',year:'numeric'}).format(new Date(`${d}T12:00:00`));
